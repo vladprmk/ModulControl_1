@@ -10,7 +10,7 @@ from loguru import logger
 from sqlalchemy import create_engine
 
 from .db import metadata
-from .routers import auth
+from .routers import auth, bookings, hotels
 
 if typing.TYPE_CHECKING:
     from typing import Any, Callable
@@ -55,6 +55,8 @@ app = FastAPI(
 )
 
 app.include_router(auth.get_router())
+app.include_router(hotels.get_router())
+app.include_router(bookings.get_router())
 
 
 @app.middleware("http")
