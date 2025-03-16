@@ -1,0 +1,57 @@
+[project]
+name = "ModulControl_1"
+version = "0.0.0a0"
+description = "Universal, typed, and high-performance REST API for seamless hotel room booking and management."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bcrypt>=4.3.0",
+    "fastapi[standard]>=0.115.11",
+    "hypercorn>=0.17.3",
+    "loguru>=0.7.3",
+    "pydantic-settings>=2.8.1",
+    "pyjwt>=2.10.1",
+    "sqlalchemy>=2.0.39",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "ruff>=0.11.0",
+    "types-passlib>=1.7.7.20241221",
+]
+
+[tool.mypy]
+show_error_codes = true
+
+pretty = true
+
+warn_unused_ignores = true
+warn_redundant_casts = true
+warn_unreachable = true
+
+allow_untyped_globals = false
+allow_redefinition = false
+
+[tool.ruff]
+target-version = "py312"
+line-length = 79
+
+[tool.ruff.lint]
+select = [
+  "E",
+  "F",
+  "I",
+  "B",
+  "A",
+#   "ANN"
+]
+ignore = [
+  "B008",
+]
