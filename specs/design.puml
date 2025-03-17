@@ -1,0 +1,105 @@
+@startuml
+
+package "src" {
+    package "routers" {
+        package "auth" {
+            class AuthConfig
+            class Dependencies {
+                + get_engine()
+                + get_user_repository()
+                + get_active_user()
+            }
+            class Router {
+                + register()
+                + login()
+                + me()
+            }
+        }
+        package "bookings" {
+            class Dependencies {
+                + get_engine()
+                + get_booking_repository()
+                + get_user_repository()
+            }
+            class Router {
+                + create_booking()
+                + list_user_bookings()
+                + cancel_booking()
+                + confirm_booking()
+            }
+        }
+        package "hotels" {
+            class Dependencies {
+                + get_engine()
+                + get_hotel_repository()
+            }
+            class Router {
+                + list_hotels()
+                + get_hotel()
+                + create_hotel()
+            }
+        }
+        package "rooms" {
+            class Dependencies {
+                + get_engine()
+                + get_room_repository()
+            }
+            class Router {
+                + list_rooms()
+                + create_room()
+            }
+        }
+    }
+    
+    package "db" {
+        class Engine {
+            + metadata
+            + user_table
+            + hotel_table
+            + room_table
+            + booking_table
+        }
+        class Models {
+            + UserInDB
+            + HotelInDB
+            + RoomInDB
+            + BookingInDB
+        }
+        class Repositories {
+            + UserRepository
+            + HotelRepository
+            + RoomRepository
+            + BookingRepository
+        }
+    }
+    
+    package "main" {
+        class FastAPI_App {
+            + lifespan()
+            + include_router()
+            + middleware()
+            + docs()
+        }
+    }
+}
+
+FastAPI_App --> "uses" auth.Router
+FastAPI_App --> "uses" bookings.Router
+FastAPI_App --> "uses" hotels.Router
+FastAPI_App --> "uses" rooms.Router
+
+auth.Router --> auth.Dependencies
+bookings.Router --> bookings.Dependencies
+hotels.Router --> hotels.Dependencies
+rooms.Router --> rooms.Dependencies
+
+auth.Dependencies --> db.Repositories
+bookings.Dependencies --> db.Repositories
+hotels.Dependencies --> db.Repositories
+rooms.Dependencies --> db.Repositories
+
+db.Repositories --> db.Engine
+
+auth.Router --> auth.AuthConfig
+
+@enduml
